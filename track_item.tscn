@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c6xk3pm01k21l"]
+
+[ext_resource type="Script" path="res://track_item.gd" id="1_item_script"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_item"]
+size = Vector3(1.2, 1.4, 0.8)
+
+[node name="TrackItem" type="Area3D" groups=["track_item"]]
+script = ExtResource("1_item_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BoxShape3D_item")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+billboard = 2
+texture = ExtResource("2_icon")

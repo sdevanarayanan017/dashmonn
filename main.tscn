@@ -1,0 +1,559 @@
+[gd_scene format=3 uid="uid://cgkqdlymd8rnf"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_main_script"]
+[ext_resource type="PackedScene" uid="uid://d1jplho5oluhe" path="res://player.tscn" id="2_player_scene"]
+[ext_resource type="PackedScene" uid="uid://b8tlyx61vjfq8" path="res://enemy.tscn" id="3_chaser_scene"]
+[ext_resource type="PackedScene" uid="uid://c6xk3pm01k21l" path="res://track_item.tscn" id="4_item_scene"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_village"]
+sky_top_color = Color(0.1, 0.25, 0.55, 1)
+sky_horizon_color = Color(0.62, 0.48, 0.35, 1)
+ground_bottom_color = Color(0.12, 0.22, 0.1, 1)
+ground_horizon_color = Color(0.42, 0.35, 0.28, 1)
+sun_angle_max = 30.0
+sun_curve = 0.18
+
+[sub_resource type="Sky" id="Sky_village"]
+sky_material = SubResource("ProceduralSkyMaterial_village")
+
+[sub_resource type="Environment" id="Environment_village"]
+background_mode = 2
+sky = SubResource("Sky_village")
+ambient_light_source = 3
+ambient_light_color = Color(0.55, 0.62, 0.78, 1)
+ambient_light_energy = 0.75
+reflected_light_source = 1
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.12
+glow_blend_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.58, 0.55, 0.62, 1)
+fog_density = 0.012
+fog_aerial_perspective = 0.35
+
+[sub_resource type="LabelSettings" id="LabelSettings_main"]
+font_size = 24
+font_color = Color(1, 1, 1, 1)
+outline_size = 5
+outline_color = Color(0.05, 0.05, 0.05, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_coins"]
+font_size = 22
+font_color = Color(1, 0.85, 0.15, 1)
+outline_size = 5
+outline_color = Color(0.15, 0.1, 0.0, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_speed"]
+font_size = 20
+font_color = Color(0.55, 1.0, 0.7, 1)
+outline_size = 4
+outline_color = Color(0.0, 0.12, 0.06, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_status"]
+font_size = 18
+font_color = Color(0.3, 0.9, 1, 1)
+outline_size = 4
+outline_color = Color(0, 0.05, 0.15, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_token_bg"]
+bg_color = Color(0.08, 0.12, 0.18, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_token_fill"]
+bg_color = Color(0.1, 0.85, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_warning"]
+font_size = 26
+font_color = Color(1, 0.2, 0.2, 1)
+outline_size = 6
+outline_color = Color(0.2, 0.0, 0.0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gameover_bg"]
+bg_color = Color(0.04, 0.02, 0.08, 0.93)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_go_header"]
+bg_color = Color(0.10, 0.04, 0.02, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+border_width_bottom = 2
+border_color = Color(0.85, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_go_body"]
+bg_color = Color(0.0, 0.0, 0.0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_game_name"]
+font_size = 22
+font_color = Color(0.85, 0.85, 0.85, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_title"]
+font_size = 46
+font_color = Color(1, 0.22, 0.22, 1)
+outline_size = 8
+outline_color = Color(0.15, 0.0, 0.0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_hint"]
+font_size = 16
+font_color = Color(0.7, 0.7, 0.7, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_score"]
+font_size = 30
+font_color = Color(0.2, 0.85, 1.0, 1)
+outline_size = 5
+outline_color = Color(0.0, 0.1, 0.2, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_dist"]
+font_size = 22
+font_color = Color(0.9, 0.9, 0.9, 1)
+outline_size = 4
+outline_color = Color(0.05, 0.05, 0.05, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_go_tagline"]
+font_size = 14
+font_color = Color(0.55, 0.55, 0.6, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_divider"]
+bg_color = Color(0.85, 0.1, 0.1, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_retry_normal"]
+bg_color = Color(0.07, 0.07, 0.07, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_retry_hover"]
+bg_color = Color(0.18, 0.18, 0.18, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 1.0, 1.0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_retry_pressed"]
+bg_color = Color(0.05, 0.05, 0.05, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_normal"]
+bg_color = Color(0.05, 0.05, 0.05, 0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_hover"]
+bg_color = Color(0.12, 0.12, 0.14, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menu_pressed"]
+bg_color = Color(0.06, 0.06, 0.08, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_main_menu_bg"]
+bg_color = Color(0.03, 0.02, 0.06, 0.94)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.75, 1.0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_main_menu_header"]
+bg_color = Color(0.06, 0.04, 0.12, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+border_width_bottom = 2
+border_color = Color(0.15, 0.75, 1.0, 0.6)
+
+[sub_resource type="LabelSettings" id="LabelSettings_menu_title"]
+font_size = 52
+font_color = Color(1, 1, 1, 1)
+outline_size = 10
+outline_color = Color(0.05, 0.1, 0.25, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_menu_subtitle"]
+font_size = 17
+font_color = Color(0.15, 0.85, 1.0, 1)
+outline_size = 4
+outline_color = Color(0, 0.05, 0.15, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_normal"]
+bg_color = Color(0.08, 0.55, 1.0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_hover"]
+bg_color = Color(0.18, 0.68, 1.0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_pressed"]
+bg_color = Color(0.04, 0.36, 0.82, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_controls"]
+font_size = 14
+font_color = Color(0.6, 0.6, 0.65, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 0.8)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main_script")
+track_item_scene = ExtResource("4_item_scene")
+chaser_scene = ExtResource("3_chaser_scene")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_village")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 15, 0)
+light_color = Color(1, 0.95, 0.9, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Chaser" parent="." instance=ExtResource("3_chaser_scene")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopLeft" type="VBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 420.0
+offset_bottom = 185.0
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/UI/TopLeft"]
+layout_mode = 2
+text = "SCORE: 0    BEST: 0"
+label_settings = SubResource("LabelSettings_main")
+
+[node name="CoinsLabel" type="Label" parent="CanvasLayer/UI/TopLeft"]
+layout_mode = 2
+text = "DIST: 0m  |  COINS: 0"
+label_settings = SubResource("LabelSettings_coins")
+
+[node name="SpeedLabel" type="Label" parent="CanvasLayer/UI/TopLeft"]
+layout_mode = 2
+text = "SPEED: 11.0 m/s"
+label_settings = SubResource("LabelSettings_speed")
+
+[node name="TokenStatus" type="Label" parent="CanvasLayer/UI/TopLeft"]
+layout_mode = 2
+text = "BOOSTER TOKENS: 0 / 3"
+label_settings = SubResource("LabelSettings_status")
+
+[node name="TokenBar" type="ProgressBar" parent="CanvasLayer/UI/TopLeft"]
+custom_minimum_size = Vector2(300, 18)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_token_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_token_fill")
+max_value = 100.0
+show_percentage = false
+
+[node name="ChaserWarning" type="Label" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 70.0
+grow_horizontal = 2
+text = "CHASER CLOSING IN!"
+label_settings = SubResource("LabelSettings_warning")
+horizontal_alignment = 1
+
+[node name="Popups" type="Control" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ControlsHint" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "[A/D] STEER  |  [S] SLIDE  |  [SPACE] JUMP  |  [SHIFT] DASH  |  [F] GRAPPLE HOOK"
+label_settings = SubResource("LabelSettings_controls")
+horizontal_alignment = 1
+
+[node name="MainMenuPanel" type="PanelContainer" parent="CanvasLayer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -280.0
+offset_right = 260.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_main_menu_bg")
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/MainMenuPanel"]
+layout_mode = 2
+
+[node name="Header" type="PanelContainer" parent="CanvasLayer/MainMenuPanel/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_main_menu_header")
+
+[node name="HeaderVBox" type="VBoxContainer" parent="CanvasLayer/MainMenuPanel/VBox/Header"]
+layout_mode = 2
+
+[node name="Spacer0" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Header/HeaderVBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[node name="GameTitleLabel" type="Label" parent="CanvasLayer/MainMenuPanel/VBox/Header/HeaderVBox"]
+layout_mode = 2
+text = "DASHMON"
+label_settings = SubResource("LabelSettings_menu_title")
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="CanvasLayer/MainMenuPanel/VBox/Header/HeaderVBox"]
+layout_mode = 2
+text = "NEVER STOP RUNNING."
+label_settings = SubResource("LabelSettings_menu_subtitle")
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Header/HeaderVBox"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[node name="Body" type="VBoxContainer" parent="CanvasLayer/MainMenuPanel/VBox"]
+layout_mode = 2
+
+[node name="Pad1" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(420, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_play_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_play_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_play_pressed")
+text = "▶  START RUN"
+
+[node name="Pad2" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HintDivider" type="PanelContainer" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_divider")
+
+[node name="Pad3" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[node name="ControlsLabel" type="Label" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+layout_mode = 2
+text = "[A / D]  Steer Left / Right
+[S]  Slide Under Obstacles
+[SPACE]  Jump  (hold = higher)
+[SHIFT]  Super Dash
+[F]  Grapple Hook + Flight"
+label_settings = SubResource("LabelSettings_controls")
+horizontal_alignment = 1
+
+[node name="Pad4" type="Control" parent="CanvasLayer/MainMenuPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="GameOverPanel" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -250.0
+offset_right = 240.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gameover_bg")
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/GameOverPanel"]
+layout_mode = 2
+
+[node name="Header" type="PanelContainer" parent="CanvasLayer/GameOverPanel/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_go_header")
+
+[node name="HeaderVBox" type="VBoxContainer" parent="CanvasLayer/GameOverPanel/VBox/Header"]
+layout_mode = 2
+
+[node name="PadH" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Header/HeaderVBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="GameNameLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Header/HeaderVBox"]
+layout_mode = 2
+text = "DASHMON"
+label_settings = SubResource("LabelSettings_go_game_name")
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Header/HeaderVBox"]
+layout_mode = 2
+text = "RUN TERMINATED"
+label_settings = SubResource("LabelSettings_go_title")
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Header/HeaderVBox"]
+layout_mode = 2
+text = "HAZARD IMPACT!"
+label_settings = SubResource("LabelSettings_go_hint")
+horizontal_alignment = 1
+
+[node name="PadH2" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Header/HeaderVBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Divider" type="PanelContainer" parent="CanvasLayer/GameOverPanel/VBox"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_divider")
+
+[node name="Body" type="VBoxContainer" parent="CanvasLayer/GameOverPanel/VBox"]
+layout_mode = 2
+
+[node name="Pad1" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="FinalScoreLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+layout_mode = 2
+text = "FINAL SCORE: 0"
+label_settings = SubResource("LabelSettings_go_score")
+horizontal_alignment = 1
+
+[node name="FinalDistLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+layout_mode = 2
+text = "DISTANCE: 0 METERS"
+label_settings = SubResource("LabelSettings_go_dist")
+horizontal_alignment = 1
+
+[node name="TaglineLabel" type="Label" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+layout_mode = 2
+text = "never stop running."
+label_settings = SubResource("LabelSettings_go_tagline")
+horizontal_alignment = 1
+
+[node name="Pad2" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(420, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_retry_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_retry_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_retry_pressed")
+text = "RETRY RUN  [R]"
+
+[node name="Pad3" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="MainMenuButton" type="Button" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(420, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_menu_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_menu_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_menu_pressed")
+text = "MAIN MENU"
+
+[node name="Pad4" type="Control" parent="CanvasLayer/GameOverPanel/VBox/Body"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[connection signal="pressed" from="CanvasLayer/MainMenuPanel/VBox/Body/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameOverPanel/VBox/Body/RetryButton" to="." method="_restart_game"]
+[connection signal="pressed" from="CanvasLayer/GameOverPanel/VBox/Body/MainMenuButton" to="." method="_on_main_menu_pressed"]

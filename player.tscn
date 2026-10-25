@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://d1jplho5oluhe"]
+
+[ext_resource type="Script" uid="uid://bw263efgj38yv" path="res://player.gd" id="1_onrkg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.45
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_ninja_suit"]
+albedo_color = Color(0.02, 0.02, 0.03, 1)
+metallic = 0.15
+roughness = 0.75
+emission_enabled = true
+emission = Color(0.01, 0.01, 0.02, 1)
+emission_energy_multiplier = 0.3
+rim_enabled = true
+rim = 0.45
+rim_tint = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+material = SubResource("Mat_ninja_suit")
+size = Vector3(0.55, 0.65, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ninja_wrap"]
+albedo_color = Color(0.06, 0.06, 0.08, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_belt"]
+material = SubResource("Mat_ninja_wrap")
+size = Vector3(0.58, 0.09, 0.32)
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+material = SubResource("Mat_ninja_suit")
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="Mat_red_headband"]
+shading_mode = 0
+albedo_color = Color(0.78, 0.04, 0.04, 1)
+emission_enabled = true
+emission = Color(0.65, 0.03, 0.02, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_headband"]
+material = SubResource("Mat_red_headband")
+size = Vector3(0.46, 0.07, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ninja_mask"]
+albedo_color = Color(0.03, 0.03, 0.05, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_face_mask"]
+material = SubResource("Mat_ninja_mask")
+size = Vector3(0.36, 0.18, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ninja_eyes"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.95, 0.95, 1)
+emission_enabled = true
+emission = Color(0.85, 0.85, 0.9, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_eyes"]
+material = SubResource("Mat_ninja_eyes")
+size = Vector3(0.28, 0.06, 0.08)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_arm"]
+material = SubResource("Mat_ninja_suit")
+radius = 0.075
+height = 0.65
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_leg"]
+material = SubResource("Mat_ninja_suit")
+radius = 0.11
+height = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_trail"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.15, 0.15, 0.18, 0.5)
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_trail"]
+material = SubResource("Mat_trail")
+size = Vector2(0.9, 0.9)
+
+[node name="Player" type="CharacterBody3D" unique_id=1915100056 groups=["player"]]
+disable_mode = 2
+script = ExtResource("1_onrkg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=818195073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=1803420942]
+
+[node name="Hips" type="Node3D" parent="VisualRoot" unique_id=1069587884]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+
+[node name="Torso" type="MeshInstance3D" parent="VisualRoot/Hips" unique_id=1708767585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
+mesh = SubResource("BoxMesh_torso")
+
+[node name="Belt" type="MeshInstance3D" parent="VisualRoot/Hips/Torso" unique_id=1295076436]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.04, 0)
+mesh = SubResource("BoxMesh_belt")
+
+[node name="Head" type="MeshInstance3D" parent="VisualRoot/Hips" unique_id=1649129332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("SphereMesh_head")
+
+[node name="Headband" type="MeshInstance3D" parent="VisualRoot/Hips/Head" unique_id=1394893102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.14)
+mesh = SubResource("BoxMesh_headband")
+
+[node name="FaceMask" type="MeshInstance3D" parent="VisualRoot/Hips/Head" unique_id=335936813]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06, -0.16)
+mesh = SubResource("BoxMesh_face_mask")
+
+[node name="Eyes" type="MeshInstance3D" parent="VisualRoot/Hips/Head" unique_id=759861641]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, -0.19)
+mesh = SubResource("BoxMesh_eyes")
+
+[node name="LeftShoulder" type="Node3D" parent="VisualRoot/Hips" unique_id=195959740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38, 0.55, 0)
+
+[node name="LeftArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftShoulder" unique_id=169820748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28, 0)
+mesh = SubResource("CapsuleMesh_arm")
+
+[node name="RightShoulder" type="Node3D" parent="VisualRoot/Hips" unique_id=1525926521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.55, 0)
+
+[node name="RightArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightShoulder" unique_id=1180710355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28, 0)
+mesh = SubResource("CapsuleMesh_arm")
+
+[node name="LeftHipJoint" type="Node3D" parent="VisualRoot/Hips" unique_id=1450418116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0)
+
+[node name="LeftLegMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftHipJoint" unique_id=1033674554]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0)
+mesh = SubResource("CapsuleMesh_leg")
+
+[node name="RightHipJoint" type="Node3D" parent="VisualRoot/Hips" unique_id=580541897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
+
+[node name="RightLegMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightHipJoint" unique_id=1872638622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0)
+mesh = SubResource("CapsuleMesh_leg")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="." unique_id=970007384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0.3)
+emitting = false
+amount = 32
+lifetime = 0.3
+mesh = SubResource("QuadMesh_trail")
+gravity = Vector3(0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=496932680]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4.5, 6.5)
+current = true
+fov = 65.0

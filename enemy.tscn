@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://b8tlyx61vjfq8"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_enemy_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chaser"]
+size = Vector3(1.6, 2.0, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enemy_body"]
+albedo_color = Color(0.04, 0.01, 0.01, 1)
+metallic = 0.65
+metallic_specular = 0.9
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.9, 0.06, 0.02, 1)
+emission_energy_multiplier = 1.4
+rim_enabled = true
+rim = 1.0
+rim_tint = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enemy_glow"]
+shading_mode = 0
+albedo_color = Color(1.0, 0.28, 0.0, 1)
+emission_enabled = true
+emission = Color(1.0, 0.3, 0.0, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_enemy_torso"]
+material = SubResource("StandardMaterial3D_enemy_body")
+size = Vector3(0.58, 0.68, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_enemy_sash"]
+material = SubResource("StandardMaterial3D_enemy_glow")
+size = Vector3(0.61, 0.09, 0.33)
+
+[sub_resource type="SphereMesh" id="SphereMesh_enemy_head"]
+material = SubResource("StandardMaterial3D_enemy_body")
+radius = 0.23
+height = 0.46
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enemy_eyes"]
+shading_mode = 0
+albedo_color = Color(1.0, 0.22, 0.0, 1)
+emission_enabled = true
+emission = Color(1.0, 0.25, 0.0, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_enemy_visor"]
+material = SubResource("StandardMaterial3D_enemy_eyes")
+size = Vector3(0.32, 0.09, 0.1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_enemy_arm"]
+material = SubResource("StandardMaterial3D_enemy_body")
+radius = 0.078
+height = 0.66
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_enemy_leg"]
+material = SubResource("StandardMaterial3D_enemy_body")
+radius = 0.115
+height = 0.86
+
+[node name="Chaser" type="Area3D" groups=["chaser"]]
+script = ExtResource("1_enemy_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("BoxShape3D_chaser")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="Hips" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+
+[node name="Torso" type="MeshInstance3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, 0)
+mesh = SubResource("BoxMesh_enemy_torso")
+
+[node name="EmberSash" type="MeshInstance3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.06, 0)
+mesh = SubResource("BoxMesh_enemy_sash")
+
+[node name="Head" type="MeshInstance3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.87, 0)
+mesh = SubResource("SphereMesh_enemy_head")
+
+[node name="Visor" type="MeshInstance3D" parent="VisualRoot/Hips/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.18)
+mesh = SubResource("BoxMesh_enemy_visor")
+
+[node name="LeftShoulder" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.56, 0)
+
+[node name="LeftArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftShoulder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28, 0)
+mesh = SubResource("CapsuleMesh_enemy_arm")
+
+[node name="RightShoulder" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.56, 0)
+
+[node name="RightArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightShoulder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28, 0)
+mesh = SubResource("CapsuleMesh_enemy_arm")
+
+[node name="LeftHipJoint" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21, 0.0, 0)
+
+[node name="LeftLegMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftHipJoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43, 0)
+mesh = SubResource("CapsuleMesh_enemy_leg")
+
+[node name="RightHipJoint" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21, 0.0, 0)
+
+[node name="RightLegMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightHipJoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43, 0)
+mesh = SubResource("CapsuleMesh_enemy_leg")
